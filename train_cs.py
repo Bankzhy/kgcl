@@ -65,7 +65,7 @@ train_dataset = train_dataset.map(formatting_prompts_func, batched = True,)
 
 test_dataset = dataset["test"]
 test_dataset = test_dataset.map(formatting_prompts_func, batched = True,)
-
+test_dataset = test_dataset[:100]
 
 #设置训练参数
 model = FastLanguageModel.get_peft_model(
@@ -90,6 +90,7 @@ trainer = SFTTrainer(
     dataset_text_field = "text",
     max_seq_length = max_seq_length,
     tokenizer = tokenizer,
+    compute_metrics=compute_valid_metrics,
     args = TrainingArguments(
         per_device_train_batch_size = 2,
         gradient_accumulation_steps = 4,
