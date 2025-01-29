@@ -15,7 +15,7 @@ max_seq_length = 2048
 dtype = None
 load_in_4bit = True
 model, tokenizer = FastLanguageModel.from_pretrained(
-    model_name = "unsloth/llama-3-8b-bnb-4bit",
+    model_name = "unsloth/codellama-7b-bnb-4bit",
     max_seq_length = max_seq_length,
     dtype = dtype,
     load_in_4bit = load_in_4bit,
@@ -43,29 +43,14 @@ def formatting_prompts_func(examples):
         texts.append(text)
     return { "text" : texts, }
 
-def decode_preds(preds):
-    preds, labels = preds
-    decoded_preds = tokenizer.decode_batch(preds)
-    decoded_labels = tokenizer.decode_batch(labels)
-    return decoded_labels, decoded_preds
-
-# compute metrics
-def compute_valid_metrics(eval_preds):
-    decoded_labels, decoded_preds = decode_preds(eval_preds)
-    refs = [ref.strip().split() for ref in decoded_labels]
-    cans = [can.strip().split() for can in decoded_preds]
-    result = {}
-    result.update(bleu(references=refs, candidates=cans))
-    return result
 #hugging face数据集路径
 # train_dataset = load_dataset("code-search-net/code_search_net", split=f"train[:100000]", trust_remote_code=True)
 dataset = load_dataset('json', data_files={'train': 'tl_data/train.json', 'test': 'tl_data/test.json'})
 train_dataset = dataset["train"]
 train_dataset = train_dataset.map(formatting_prompts_func, batched = True,)
 
-test_dataset = dataset["test"]
-test_dataset = test_dataset.map(formatting_prompts_func, batched = True)
-test_dataset = test_dataset.train_test_split(test_size=0.1)
+# test_dataset = dataset["test"]
+# test_dataset = test_dataset.map(formatting_prompts_func, batched = True)
 
 #设置训练参数
 model = FastLanguageModel.get_peft_model(
@@ -86,7 +71,6 @@ model = FastLanguageModel.get_peft_model(
 trainer = SFTTrainer(
     model = model,
     train_dataset = train_dataset,
-    eval_dataset = test_dataset,
     dataset_text_field = "text",
     max_seq_length = max_seq_length,
     tokenizer = tokenizer,
@@ -95,8 +79,6 @@ trainer = SFTTrainer(
         per_device_train_batch_size = 2,
         gradient_accumulation_steps = 4,
         warmup_steps = 10,
-        eval_strategy = "steps",
-        eval_steps = 10,
         fp16 = not torch.cuda.is_bf16_supported(),
         bf16 = torch.cuda.is_bf16_supported(),
         logging_steps = 1,
@@ -114,7 +96,7 @@ trainer.train()
 model.save_pretrained("lora_model")
 
 #合并模型，保存为16位hf
-model.save_pretrained_merged("outputs", tokenizer, save_method = "merged_16bit",)
+# model.save_pretrained_merged("outputs", tokenizer, save_method = "merged_16bit",)
 
 #合并模型，并量化成4位gguf
-#model.save_pretrained_gguf("model", tokenizer, quantization_method = "q4_k_m")
+# model.save_pretrained_gguf("model", tokenizer, quantization_method = "q4_k_m")
