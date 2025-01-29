@@ -87,7 +87,7 @@ test_dataset = test_dataset.map(formatting_prompts_func, batched = True)
 preds = []
 labels = []
 
-for data in tqdm(test_dataset):
+for data in tqdm.tqdm(test_dataset):
     pred = predict(data["code"])
     preds.append(pred)
     labels.append(data["doc"])
