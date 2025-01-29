@@ -2,7 +2,7 @@ import re
 
 from datasets import load_dataset
 from unsloth import FastLanguageModel
-
+import tqdm
 from eval import bleu
 
 #加载模型
