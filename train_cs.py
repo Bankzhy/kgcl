@@ -59,7 +59,7 @@ def compute_valid_metrics(eval_preds):
     return result
 #hugging face数据集路径
 # train_dataset = load_dataset("code-search-net/code_search_net", split=f"train[:100000]", trust_remote_code=True)
-dataset = load_dataset('json', data_files={'train': 'tl_data/ntl/train.json', 'test': 'tl_data/ntl/test.json'})
+dataset = load_dataset('json', data_files={'train': 'tl_data/train.json', 'test': 'tl_data/test.json'})
 train_dataset = dataset["train"]
 train_dataset = train_dataset.map(formatting_prompts_func, batched = True,)
 
