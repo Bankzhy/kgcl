@@ -11,7 +11,7 @@ dtype = None
 load_in_4bit = True
 model, tokenizer = FastLanguageModel.from_pretrained(
     # model_name = "unsloth/codellama-7b-bnb-4bit",
-    model_name = "outputs/checkpoint-3",
+    model_name = "outputs/checkpoint-26139",
     max_seq_length = max_seq_length,
     dtype = dtype,
     load_in_4bit = load_in_4bit,
@@ -87,7 +87,7 @@ test_dataset = test_dataset.map(formatting_prompts_func, batched = True)
 preds = []
 labels = []
 
-for data in test_dataset:
+for data in tqdm(test_dataset):
     pred = predict(data["code"])
     preds.append(pred)
     labels.append(data["doc"])
