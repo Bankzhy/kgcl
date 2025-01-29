@@ -64,8 +64,8 @@ train_dataset = dataset["train"]
 train_dataset = train_dataset.map(formatting_prompts_func, batched = True,)
 
 test_dataset = dataset["test"]
-test_dataset = test_dataset.map(formatting_prompts_func, batched = True,)
-test_dataset = test_dataset[:100]
+test_dataset = test_dataset.map(formatting_prompts_func, batched = True)
+test_dataset = test_dataset.train_test_split(test_size=0.1)
 
 #设置训练参数
 model = FastLanguageModel.get_peft_model(
