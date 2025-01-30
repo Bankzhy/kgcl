@@ -56,7 +56,7 @@ def formatting_prompts_func(examples):
 
 train_dataset_l = []
 json_data = {}
-dataset_dir = "bc_data"
+dataset_dir = "bc_data/dataset"
 json_file = os.path.join(dataset_dir, "data.jsonl")
 with open(json_file, encoding='ISO-8859-1') as jf:
     lines = jf.readlines()
@@ -132,7 +132,7 @@ trainer = SFTTrainer(
         fp16 = not torch.cuda.is_bf16_supported(),
         bf16 = torch.cuda.is_bf16_supported(),
         logging_steps = 1,
-        output_dir = "outputs",
+        output_dir = "outputs_clone",
         optim = "adamw_8bit",
         weight_decay = 0.01,
         lr_scheduler_type = "linear",
@@ -144,7 +144,7 @@ trainer = SFTTrainer(
 trainer.train()
 
 #保存微调模型
-model.save_pretrained("lora_model")
+model.save_pretrained("lora_model_cl")
 
 #合并模型，保存为16位hf
 # model.save_pretrained_merged("outputs", tokenizer, save_method = "merged_16bit",)
