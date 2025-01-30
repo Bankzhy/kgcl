@@ -81,7 +81,7 @@ with open(os.path.join(dataset_dir, "train.txt"), encoding='ISO-8859-1') as f:
             code1 = json_data[ll[0]]["code"]
             code2 = json_data[ll[1]]["code"]
 
-            if ll[2] == "1":
+            if ll[2].strip() == "1":
                 label = "Yes"
             else:
                 label = "No"
@@ -137,6 +137,7 @@ trainer = SFTTrainer(
         weight_decay = 0.01,
         lr_scheduler_type = "linear",
         seed = 3407,
+        save_total_limit=3
     ),
 )
 #开始训练
