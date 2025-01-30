@@ -7,6 +7,7 @@ import torch
 from trl import SFTTrainer
 from transformers import TrainingArguments
 from datasets import load_dataset, Dataset
+from transformers.trainer_utils import get_last_checkpoint
 
 from eval import bleu
 
@@ -87,10 +88,13 @@ trainer = SFTTrainer(
         weight_decay = 0.01,
         lr_scheduler_type = "linear",
         seed = 3407,
+        num_train_epochs=6,
     ),
 )
 #开始训练
-trainer.train()
+# trainer.train()
+last_checkpoint = get_last_checkpoint("outputs")
+train_result = trainer.train(resume_from_checkpoint=last_checkpoint)
 
 #保存微调模型
 model.save_pretrained("lora_model")
