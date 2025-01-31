@@ -77,8 +77,6 @@ def predict(code1, code2):
     first_response = first_response.replace('<|end_of_text|>', "")
     first_response = first_response.split("\n")[0]
     first_response = first_response.replace("</s>", "")
-    print("first_response")
-    print(first_response)
     if first_response == "Yes":
         return 1
     else:
@@ -88,9 +86,6 @@ def predict(code1, code2):
 
 def compute_valid_metrics(predictions, labels):
     # decoded_preds, decoded_labels = eval_preds
-    print("predictions")
-    print(predictions)
-    print("labels")
     from sklearn.metrics import recall_score
     recall = recall_score(labels, predictions)
     from sklearn.metrics import precision_score
@@ -153,7 +148,7 @@ with open(os.path.join(dataset_dir, "test.txt"), encoding='ISO-8859-1') as f:
             print(e)
             continue
 # Convert list of dicts to a Dataset
-test_dataset_l = test_dataset_l[:100]
+test_dataset_l = test_dataset_l[:42000]
 test_dataset = Dataset.from_list(test_dataset_l)
 test_dataset = test_dataset.map(formatting_prompts_func, batched = True,)
 
