@@ -13,7 +13,7 @@ dtype = None
 load_in_4bit = True
 model, tokenizer = FastLanguageModel.from_pretrained(
     model_name = "outputs_clone/checkpoint-1500",
-    # model_name = "outputs/checkpoint-26139",
+    # model_name = "unsloth/codellama-7b-bnb-4bit",
     max_seq_length = max_seq_length,
     dtype = dtype,
     load_in_4bit = load_in_4bit,
@@ -148,7 +148,7 @@ with open(os.path.join(dataset_dir, "test.txt"), encoding='ISO-8859-1') as f:
             print(e)
             continue
 # Convert list of dicts to a Dataset
-test_dataset_l = test_dataset_l[:42000]
+test_dataset_l = test_dataset_l[:100]
 test_dataset = Dataset.from_list(test_dataset_l)
 test_dataset = test_dataset.map(formatting_prompts_func, batched = True,)
 
