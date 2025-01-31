@@ -142,7 +142,7 @@ trainer = SFTTrainer(
 )
 #开始训练
 # trainer.train()
-last_checkpoint = get_last_checkpoint("outputs")
+last_checkpoint = get_last_checkpoint("outputs_clone")
 train_result = trainer.train(resume_from_checkpoint=last_checkpoint)
 #保存微调模型
 model.save_pretrained("lora_model_cl")
