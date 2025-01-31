@@ -85,7 +85,9 @@ def predict(code1, code2):
 
 def compute_valid_metrics(predictions, labels):
     # decoded_preds, decoded_labels = eval_preds
-
+    print("predictions")
+    print(predictions)
+    print("labels")
     from sklearn.metrics import recall_score
     recall = recall_score(labels, predictions)
     from sklearn.metrics import precision_score
