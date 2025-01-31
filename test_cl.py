@@ -148,6 +148,7 @@ with open(os.path.join(dataset_dir, "test.txt"), encoding='ISO-8859-1') as f:
             print(e)
             continue
 # Convert list of dicts to a Dataset
+test_dataset_l = test_dataset_l[:42000]
 test_dataset = Dataset.from_list(test_dataset_l)
 test_dataset = test_dataset.map(formatting_prompts_func, batched = True,)
 
