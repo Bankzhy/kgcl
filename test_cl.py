@@ -76,6 +76,7 @@ def predict(code1, code2):
     first_response = match.group(1).strip() if match else None
     first_response = first_response.replace('<|end_of_text|>', "")
     first_response = first_response.split("\n")[0]
+    first_response = first_response.replace("</s>", "")
     print("first_response")
     print(first_response)
     if first_response == "Yes":
