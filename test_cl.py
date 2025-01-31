@@ -106,7 +106,7 @@ def compute_valid_metrics(predictions, labels):
 # test_dataset = test_dataset.map(formatting_prompts_func, batched = True)
 test_dataset_l = []
 json_data = {}
-dataset_dir = "bc_data"
+dataset_dir = "bc_data/test"
 json_file = os.path.join(dataset_dir, "data.jsonl")
 with open(json_file, encoding='ISO-8859-1') as jf:
     lines = jf.readlines()
